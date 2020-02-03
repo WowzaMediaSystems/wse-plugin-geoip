@@ -1,5 +1,5 @@
 /*
- * This code and all components (c) Copyright 2006 - 2018, Wowza Media Systems, LLC. All rights reserved.
+ * This code and all components (c) Copyright 2006 - 2020, Wowza Media Systems, LLC. All rights reserved.
  * This code is licensed pursuant to the Wowza Public License version 1.0, available at www.wowza.com/legal.
  */
 package com.wowza.wms.plugin.geoip;
@@ -8,6 +8,7 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -207,10 +208,14 @@ public class ServerListenerGeoIp implements IServerNotify2
 									WMSLoggerFactory.getLogger(getClass()).error("ServerListenerGeoIp.checkProvider error occured", e);
 								}
 							}
-							readLock.lock();
+						}
+						catch (Exception e)
+						{
+							WMSLoggerFactory.getLogger(getClass()).error("ServerListenerGeoIp.checkProvider2 error occured", e);
 						}
 						finally
 						{
+							readLock.lock();
 							writeLock.unlock();
 						}
 					}

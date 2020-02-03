@@ -1,5 +1,5 @@
 /*
- * This code and all components (c) Copyright 2006 - 2018, Wowza Media Systems, LLC. All rights reserved.
+ * This code and all components (c) Copyright 2006 - 2020, Wowza Media Systems, LLC. All rights reserved.
  * This code is licensed pursuant to the Wowza Public License version 1.0, available at www.wowza.com/legal.
  */
 package com.wowza.wms.plugin.geoip;
@@ -49,6 +49,10 @@ public class ModuleGeoIp extends ModuleBase
 			{
 				logger.error(CLASSNAME + "::RTSPActionNotifyListener.onDescribe [" + appInstance.getContextStr()  +"] error occured.", e);
 			}
+			catch (Throwable t)
+			{
+				logger.error(CLASSNAME + "::RTSPActionNotifyListener.onDescribe [" + appInstance.getContextStr()  +"] Throwable error occured.", t);
+			}
 		}
 
 		@Override
@@ -71,6 +75,10 @@ public class ModuleGeoIp extends ModuleBase
 			{
 				logger.error(CLASSNAME + "::RTSPActionNotifyListener.onAnnounce [" + appInstance.getContextStr()  +"] error occured.", e);
 			}
+			catch (Throwable t)
+			{
+				logger.error(CLASSNAME + "::RTSPActionNotifyListener.onAnnounce [" + appInstance.getContextStr()  +"] Throwable error occured.", t);
+			}
 		}
 	}
 	
@@ -87,7 +95,6 @@ public class ModuleGeoIp extends ModuleBase
 	private String countriesStr = "*";
 	private List<String> countries;
 	private boolean matchAllow = true;
-	private boolean noMatchAllow = false;
 	private boolean debugLog = false;
 	private String category = WMSLoggerIDs.CAT_application;
 	private String event = WMSLoggerIDs.EVT_comment;
@@ -105,7 +112,6 @@ public class ModuleGeoIp extends ModuleBase
 		countriesStr = appInstance.getProperties().getPropertyStr("geoIpCountries", countriesStr);
 		countries = splitPropertyIntoList(countriesStr, false);
 		matchAllow = appInstance.getProperties().getPropertyBoolean("geoIpMatchAllow", matchAllow);
-		noMatchAllow = appInstance.getProperties().getPropertyBoolean("geoIpNoMatchAllow", noMatchAllow);
 		debugLog = appInstance.getProperties().getPropertyBoolean("geoIpDebugLog", debugLog);
 		if(logger.isDebugEnabled())
 			debugLog = true;
@@ -113,7 +119,7 @@ public class ModuleGeoIp extends ModuleBase
 		if(geoIpReader == null)
 			logger.warn("ModuleGeoIp.onAppStart [" + appInstance.getContextStr() + "] Build #1 " + ServerListenerGeoIp.PROP_GEOIP_READER + " not set");
 		else
-			logger.info("ModuleGeoIp.onAppStart [" + appInstance.getContextStr() + "] Build #1 countries: " + countries + ", matchAllow: " + matchAllow + ", noMatchAllow: " + noMatchAllow + ", allowedIps: " + allowedIps + ", allowedEncoders: " + allowedEncoders, WMSLoggerIDs.CAT_application, WMSLoggerIDs.EVT_comment);
+			logger.info("ModuleGeoIp.onAppStart [" + appInstance.getContextStr() + "] Build #1 countries: " + countries + ", matchAllow: " + matchAllow + ", allowedIps: " + allowedIps + ", allowedEncoders: " + allowedEncoders, WMSLoggerIDs.CAT_application, WMSLoggerIDs.EVT_comment);
 	}
 
 	public void onConnect(IClient client, RequestFunction function, AMFDataList params)
@@ -132,8 +138,12 @@ public class ModuleGeoIp extends ModuleBase
 			client.rejectConnection();
 		}
 		catch (Exception e)
-		{
+		{ 
 			logger.error(CLASSNAME + ".onConnect [" + appInstance.getContextStr()  +"] error occured.", e);
+		}
+		catch (Throwable t)
+		{
+			logger.error(CLASSNAME + ".onConnect [" + appInstance.getContextStr()  +"] Throwable error occured.", t);
 		}
 	}
 
@@ -155,6 +165,10 @@ public class ModuleGeoIp extends ModuleBase
 		{
 			logger.error(CLASSNAME + ".onHttpSessionCreate [" + appInstance.getContextStr()  +"] error occured.", e);
 		}
+		catch (Throwable t)
+		{
+			logger.error(CLASSNAME + ".onHttpSessionCreate [" + appInstance.getContextStr()  +"] Throwable error occured.", t);
+		}
 	}
 
 	public void onRTPSessionCreate(RTPSession rtpSession)
@@ -164,7 +178,7 @@ public class ModuleGeoIp extends ModuleBase
 	
 	public boolean checkAddress(String ipAddress)
 	{
-		boolean valid = noMatchAllow;
+		boolean valid = !matchAllow;
 		CountryResponse response = null;
 		try
 		{
@@ -195,8 +209,8 @@ public class ModuleGeoIp extends ModuleBase
 					if (StringUtils.isEmpty(isoCode))
 					{
 						if(debugLog)
-							logger.info(String.format("%s.checkAddress [%s] ipAddress: %s, isoCode: %s is empty. returning %b", CLASSNAME, appInstance.getContextStr(), ipAddress, isoCode, noMatchAllow), category, event);
-						valid = noMatchAllow;
+							logger.info(String.format("%s.checkAddress [%s] ipAddress: %s, isoCode: %s is empty. returning %b", CLASSNAME, appInstance.getContextStr(), ipAddress, isoCode, !matchAllow), category, event);
+						valid = !matchAllow;
 						break;
 					}
 
