@@ -54,7 +54,7 @@ Path | Name | Value | Type | Comment
 When a client/player makes a request to the server, a geoip lookup will be performed to determine if the connection is allowed. The ISO country code for the connecting IP address will be checked against the list of country codes and the connection will be allowed or blocked, depending on the configuration of the `geoIpMatchAllow` property. The default configuration is to only allow connections if a match can be found. To allow non-matching and block matching connections, set `geoIpMatchAllow` to `false`.
 
 ## More resources
-[Wowza Streaming Engine Java API reference documentation](https://www.wowza.com/docs/wowza-streaming-engine-java-api-reference-documentation)
+[Wowza Streaming Engine Java API reference documentation](https://www.wowza.com/resources/serverapi/)
 
 [Extend Wowza Streaming Engine using the Wowza IDE](https://www.wowza.com/docs/how-to-extend-wowza-streaming-engine-using-the-wowza-ide)
 
@@ -67,5 +67,3 @@ For additional information about this module, see [Enable geographic locking wit
 
 ## License
 This code is distributed under the [Wowza Public License](https://github.com/WowzaMediaSystems/wse-plugin-geoip/blob/master/LICENSE.txt).
-
-![alt tag](http://wowzalogs.com/stats/githubimage.php?plugin=wse-plugin-geoip)
