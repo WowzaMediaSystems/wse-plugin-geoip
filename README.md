@@ -1,6 +1,8 @@
 # GeoIP
 The **ModuleGeoIp** module for Wowza Streaming Engine™ [media server software](https://www.wowza.com/products/streaming-engine) enables applications to allow or block connections based on the country they originate from.
 
+This repo includes a [compiled version](/lib/wse-plugin-geoip.jar).
+
 ## Prerequisites
 Wowza Streaming Engine 4.7.5 or later is required.
 
@@ -58,7 +60,7 @@ When a client/player makes a request to the server, a geoip lookup will be perfo
 
 [Extend Wowza Streaming Engine using the Wowza IDE](https://www.wowza.com/docs/how-to-extend-wowza-streaming-engine-using-the-wowza-ide)
 
-Wowza Media Systems™ provides developers with a platform to create streaming applications and solutions. See the [Wowza Developer Portal](https://www.wowza.com/resources/developers) to learn more about our APIs and SDK.
+Wowza Media Systems™ provides developers with a platform to create streaming applications and solutions. See the [Wowza Developer Portal](https://www.wowza.com/developer) to learn more about our APIs and SDK.
 
 For additional information about this module, see [Enable geographic locking with a Wowza Streaming Engine server listener and Java module](https://www.wowza.com/docs/how-to-enable-geographic-locking-modulegeoiplock).
 
